@@ -34,7 +34,16 @@ I had a few ideas for additional features, including adding a logger (technical)
 
 ### Feat: Search treading pair
 
-Since i implemented the List component as a server component, it was bit painful to communicate between server and client component. I have added the search bar to filter the trading pair by key words and added an additional toggle to hide the delisted trading pairs. 
+A search bar and a toggle for hiding delisted pairs were implemented to enhance the trading pair list. The initial implementation of the list component as a Server Component presented server-client communication challenges, necessitating the creation of intermediary components for passing search keywords and a subsequent rewrite of the list component.
 
+### Screenshot
 
+Home
+![Home page](/home.png)
+
+Detail
+![Detail page](/detail.png)
+
+Search Feature
+![Feature](/search-feature.png)
 
