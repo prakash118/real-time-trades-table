@@ -1,4 +1,59 @@
+'use client';
+
+import { useState, useEffect } from 'react';
+import useWebSocket from 'react-use-websocket';
+
+import TradingPairDetailRow from '@/app/components/trading-pair-detail-row';
+import { Trade } from '@/types/trading-pairs';
+
+const socketUrl = 'wss://ws-feed.exchange.coinbase.com';
+
 export default function Page() {
+  const [trades, setTrades] = useState<Trade[]>([]);
+  const { sendMessage, lastMessage } = useWebSocket(socketUrl);
+
+  useEffect(() => {
+    sendMessage(
+      JSON.stringify({
+        type: 'subscribe',
+        product_ids: ['ETH-GBP'],
+        channels: ['ticker'],
+      })
+    );
+    return () => {
+      sendMessage(
+        JSON.stringify({
+          type: 'unsubscribe',
+          product_ids: ['ETH-GBP'],
+          channels: ['ticker'],
+        })
+      );
+    };
+  }, []);
+
+  useEffect(() => {
+    console.log('lastMessage');
+    
+    if (lastMessage) {
+      const newTrade = JSON.parse(lastMessage.data);
+      if (newTrade.type === 'ticker') {
+        let newTrades = [];
+        // some trade reappears - (guessing) the execution happens in chunk
+        // previous trades are ignored here and replaced with the latest trade
+        const hasTrade = trades.some((t) => t.trade_id === newTrade.trade_id);
+        if (hasTrade) {
+          newTrades = [
+            newTrade,
+            ...trades.filter((t) => t.trade_id !== newTrade.trade_id),
+          ];
+        } else {
+          newTrades = [newTrade, ...trades];
+        }
+        setTrades(newTrades);
+      }
+    }
+  }, [lastMessage]);
+
   return (
     <div className="m-4">
       <div className="relative overflow-x-auto">
@@ -23,15 +78,10 @@ export default function Page() {
             </tr>
           </thead>
           <tbody>
-            <tr className=" bg-white border-b dark:bg-gray-800 dark:border-gray-700">
-              <td className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                ETH-USD
-              </td>
-              <td className="px-6 py-4">BUY</td>
-              <td className="px-6 py-4">33000</td>
-              <td className="px-6 py-4">1</td>
-              <td className="px-6 py-4">20/01/2025, 12:29:44</td>
-            </tr>
+            {!!trades.length &&
+              trades.map((tradeData) => (
+                <TradingPairDetailRow key={tradeData.trade_id} {...tradeData} />
+              ))}
           </tbody>
         </table>
       </div>

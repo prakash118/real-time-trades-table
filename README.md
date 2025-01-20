@@ -21,3 +21,5 @@ This component presents a list of available trading pairs, sourced from a REST A
 ### Details page (/trading-pair-detail/)
 
 The page provides a real-time view of trades. When a trading pair is selected, its corresponding trades are displayed. If the URI lacks a trading pair parameter, ETH-USD (/trading-pair-detail/eth-usd) is the default.
+
+This project utilizes the `react-use-websocket` library for WebSocket functionality. While this offers advantages over a custom implementation, its primary benefit in this context is accelerated development.
