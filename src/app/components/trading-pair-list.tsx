@@ -1,18 +1,24 @@
-import { TradingPair } from '@/types/trading-pairs';
+'use client';
 import Link from 'next/link';
-import { Suspense } from 'react';
+import { use } from 'react';
+import { TradingPair } from '@/types/trading-pairs';
+import { useTradingPairFilterContext } from '../context/trading-pair-filter-provider';
 
-const getProducts = async (): Promise<TradingPair[]> => {
-  const res = await fetch('https://api.exchange.coinbase.com/products');
-  return await res.json();
-};
-
-async function TradingPairListImpl() {
-  const products = await getProducts();
+export default function TradingPairList({
+  productsPromise,
+}: {
+  productsPromise: Promise<TradingPair[]>;
+}) {
+  const products = use(productsPromise);
+  const { searchText, hideDelisted } = useTradingPairFilterContext();
   return (
-    <div className="m-4">
-      <div className="grid grid-cols-2 md:grid-cols-4 gap-4 my-4">
-        {products.map((product) =>
+    <div className="grid grid-cols-2 md:grid-cols-4 gap-4 my-4">
+      {products
+        .filter((product: TradingPair) =>
+          product.id.toLowerCase().includes(searchText)
+        )
+        .filter((product) => (hideDelisted ? !product.trading_disabled : true))
+        .map((product) =>
           product.trading_disabled ? (
             <div
               key={product.id}
@@ -40,15 +46,6 @@ async function TradingPairListImpl() {
             </Link>
           )
         )}
-      </div>
     </div>
-  );
-}
-
-export default function TradingPairList() {
-  return (
-    <Suspense fallback={<div>Loading...</div>}>
-      <TradingPairListImpl />
-    </Suspense>
   );
 }
