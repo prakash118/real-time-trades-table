@@ -3,7 +3,7 @@ import { createContext, useContext, useEffect, useState } from 'react';
 import { redirect, useParams } from 'next/navigation';
 import useWebSocket, { ReadyState } from 'react-use-websocket';
 
-import { Trade } from '@/types/trading-pairs';
+import { Trade, TradeSide } from '@/types/trading-pairs';
 
 const socketUrl = 'wss://ws-feed.exchange.coinbase.com';
 
@@ -11,6 +11,8 @@ interface TradingPairDetailContextProps {
   trades: Trade[];
   handleClose: () => void;
   loading: boolean;
+  setSide: (side: TradeSide) => void;
+  side: TradeSide;
 }
 
 const TradingPairDetailContext = createContext<
@@ -42,6 +44,7 @@ export default function TradingPairDetailProvider({
   const { pair } = useParams<{ pair: string }>();
   const [trades, setTrades] = useState<Trade[]>([]);
   const [loading, setLoading] = useState(true);
+  const [side, setSide] = useState<TradeSide>('both');
   const { sendMessage, lastMessage, readyState } = useWebSocket(socketUrl);
   const subscription = setupSubscription(pair);
 
@@ -50,7 +53,7 @@ export default function TradingPairDetailProvider({
     return () => {
       sendMessage(subscription.unsubscribe());
     };
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   useEffect(() => {
@@ -69,6 +72,10 @@ export default function TradingPairDetailProvider({
         } else {
           newTrades = [newTrade, ...trades];
         }
+        // only 50 trades
+        if (newTrades.length > 50) {
+          newTrades = newTrades.slice(0, 50);
+        }
         setTrades(newTrades);
       }
     }
@@ -76,21 +83,19 @@ export default function TradingPairDetailProvider({
   }, [lastMessage, loading]); // ignoring the update for trades
 
   useEffect(() => {
-    console.log(readyState);
-    
     if (readyState === ReadyState.OPEN) {
       setLoading(false);
     }
   }, [readyState]);
 
   const handleClose = () => {
-    // temp
-    sendMessage(subscription.unsubscribe());
-    // redirect('/');
+    redirect('/');
   };
 
   return (
-    <TradingPairDetailContext value={{ trades, handleClose, loading }}>
+    <TradingPairDetailContext
+      value={{ trades, handleClose, loading, side, setSide }}
+    >
       {children}
     </TradingPairDetailContext>
   );
