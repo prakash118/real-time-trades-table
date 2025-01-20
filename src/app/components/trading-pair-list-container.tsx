@@ -1,4 +1,5 @@
 import { Suspense } from 'react';
+import { ErrorBoundary } from 'react-error-boundary';
 import TradingPairList from './trading-pair-list';
 
 export default function TradingPairContainer() {
@@ -7,8 +8,10 @@ export default function TradingPairContainer() {
     return await res.json();
   };
   return (
+    <ErrorBoundary fallback={<div>Error</div>}>
       <Suspense fallback={<div>Loading...</div>}>
         <TradingPairList productsPromise={getProducts()} />
       </Suspense>
+    </ErrorBoundary>
   );
 }
