@@ -9,6 +9,7 @@ export default function TradingPairToggle() {
     <label className="inline-flex items-center cursor-pointer">
       <input
         type="checkbox"
+        data-testid="hide-delisted-toggle"
         defaultChecked={hideDelisted}
         onChange={(event) => {
           setHideDelisted(event.target.checked);
