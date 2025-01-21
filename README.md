@@ -26,7 +26,9 @@ This project utilizes the `react-use-websocket` library for WebSocket functional
 
 ### Happy path!!
 
-Testing and error handling have not yet been implemented. While the home page utilizes Suspense for some basic error management, comprehensive error handling, particularly for WebSocket connections, is required. The details page intentionally uses a table layout, for responsive design, a condensed table or an alternative display format is required on smaller screens.
+Basic implementation of Testing and error handling is included. While the List component utilizes Suspense for some basic error management, comprehensive error handling around WebSocket connections is required.
+
+The detail page intentionally uses a table layout for now. For responsive design, a condensed table or an alternative display format for the detail page is required on smaller screens.
 
 ### Extra feature
 
