@@ -1,8 +1,8 @@
 'use client';
 
-import { useTradingPairFilterContext } from '../context/trading-pair-filter-provider';
+import { useTradingPairFilterContext } from "@/app/context/trading-pair-filter-provider";
 
-export default function TradingPairToggle() {
+export default function Toggle() {
   const { hideDelisted, setHideDelisted } = useTradingPairFilterContext();
 
   return (

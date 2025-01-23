@@ -1,6 +1,5 @@
 import React from 'react';
-
-import { useTradingPairDetailContext } from '../context/trading-pair-detail-provider';
+import { useTradingPairDetailContext } from '@/app/context/trading-pair-detail-provider';
 
 interface ButtonProps {
   className: string;
@@ -25,7 +24,7 @@ const Button = ({ className, selected, handleSide, label }: ButtonProps) => {
   );
 };
 
-export default function TradeSideFilter() {
+export default function SideFilter() {
   const { side, setSide } = useTradingPairDetailContext();
   return (
     <div className="inline-flex rounded-md shadow-sm" role="group">

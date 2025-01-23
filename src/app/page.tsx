@@ -1,13 +1,13 @@
-import TradingPairContainer from "./components/trading-pair-list-container";
-import TradingPairListLayout from "./components/trading-pair-list-layout";
+import ListContainer from "./components/list/list-container";
+import ListLayout from "./components/list/list-layout";
 import TradingPairSearchProvider from "./context/trading-pair-filter-provider";
 
 export default function Home() {
   return (
     <TradingPairSearchProvider>
-      <TradingPairListLayout>
-        <TradingPairContainer />
-      </TradingPairListLayout>
+      <ListLayout>
+        <ListContainer />
+      </ListLayout>
     </TradingPairSearchProvider>
   );
 }

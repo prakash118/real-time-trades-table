@@ -2,9 +2,9 @@
 import Link from 'next/link';
 import { use } from 'react';
 import { TradingPair } from '@/types/trading-pairs';
-import { useTradingPairFilterContext } from '../context/trading-pair-filter-provider';
+import { useTradingPairFilterContext } from '@/app/context/trading-pair-filter-provider';
 
-export default function TradingPairList({
+export default function List({
   productsPromise,
 }: {
   productsPromise: Promise<TradingPair[]>;
@@ -34,7 +34,7 @@ export default function TradingPairList({
           ) : (
             <Link
               key={product.id}
-              href={`/trading-pair-detail/${product.id}`}
+              href={`/detail/${product.id}`}
               className="block max-w-xs p-6 bg-white border border-gray-200 rounded-lg shadow hover:bg-gray-100 dark:bg-gray-800 dark:border-gray-700 dark:hover:bg-gray-700 cursor-pointer"
             >
               <h5 className="mb-2 text-xl font-bold tracking-tight text-gray-900 dark:text-white">

@@ -1,6 +1,6 @@
 import { Trade, TradeSide } from '@/types/trading-pairs';
 
-export default function TradingPairDetailRow(params: Trade) {
+export default function Row(params: Trade) {
   const sideColor: Record<TradeSide, string> = {
     buy: 'text-green-700',
     sell: 'text-red-700',

@@ -1,8 +1,8 @@
 'use client';
 
-import { useTradingPairFilterContext } from '../context/trading-pair-filter-provider';
+import { useTradingPairFilterContext } from "@/app/context/trading-pair-filter-provider";
 
-export default function TradingPairSearch() {
+export default function Search() {
   const { searchText, setSearchText } = useTradingPairFilterContext();
 
   const searchHandler = (event: React.ChangeEvent<HTMLInputElement>) => {

@@ -3,10 +3,10 @@
 import React from 'react';
 
 import { useTradingPairDetailContext } from '@/app/context/trading-pair-detail-provider';
-import TradingPairDetailRow from './trading-pair-detail-row';
-import TradeSideFilter from './trade-side-filter';
+import SideFilter from './side-filter';
+import Row from './row';
 
-export default function TradingPairDetailTable() {
+export default function Table() {
   const { trades, handleClose, loading, side } = useTradingPairDetailContext();
 
   if (loading) {
@@ -16,7 +16,7 @@ export default function TradingPairDetailTable() {
   return (
     <div className="m-4">
       <div className="flex justify-between mb-2">
-        <TradeSideFilter />
+        <SideFilter />
         <button
           onClick={handleClose}
           type="button"
@@ -56,10 +56,7 @@ export default function TradingPairDetailTable() {
                   return tradeData.side === side;
                 })
                 .map((tradeData) => (
-                  <TradingPairDetailRow
-                    key={tradeData.trade_id}
-                    {...tradeData}
-                  />
+                  <Row key={tradeData.trade_id} {...tradeData} />
                 ))}
           </tbody>
         </table>
